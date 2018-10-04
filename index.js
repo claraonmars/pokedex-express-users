@@ -14,20 +14,20 @@ const pg = require('pg');
 
 // Initialise postgres client
 const config = {
-  user: 'akira',
-  host: '127.0.0.1',
-  database: 'pokemons',
-  port: 5432,
+    user: 'mac',
+    host: '127.0.0.1',
+    database: 'pokemons',
+    port: 5432,
 };
 
 if (config.user === 'ck') {
-	throw new Error("====== UPDATE YOUR DATABASE CONFIGURATION =======");
+    throw new Error("====== UPDATE YOUR DATABASE CONFIGURATION =======");
 };
 
 const pool = new pg.Pool(config);
 
-pool.on('error', function (err) {
-  console.log('Idle client error', err.message, err.stack);
+pool.on('error', function(err) {
+    console.log('Idle client error', err.message, err.stack);
 });
 
 /**
@@ -55,100 +55,100 @@ app.engine('jsx', reactEngine);
  * ===================================
  */
 
- const getRoot = (request, response) => {
-  // query database for all pokemon
+const getRoot = (request, response) => {
+    // query database for all pokemon
 
-  // respond with HTML page displaying all pokemon
-  //
-  const queryString = 'SELECT * from pokemon;';
-  pool.query(queryString, (err, result) => {
-    if (err) {
-      console.error('Query error:', err.stack);
-    } else {
-      console.log('Query result:', result);
+    // respond with HTML page displaying all pokemon
+    //
+    const queryString = 'SELECT * from pokemon;';
+    pool.query(queryString, (err, result) => {
+        if (err) {
+            console.error('Query error:', err.stack);
+        } else {
+            console.log('Query result:', result);
 
-      // redirect to home page
-      response.render( 'pokemon/home', {pokemon: result.rows} );
-    }
-  });
+            // redirect to home page
+            response.render('pokemon/home', { pokemon: result.rows });
+        }
+    });
 }
 
 const getNew = (request, response) => {
-  response.render('pokemon/new');
+    response.render('pokemon/new');
 }
 
 const getPokemon = (request, response) => {
-  let id = request.params['id'];
-  const queryString = 'SELECT * FROM pokemon WHERE id = ' + id + ';';
-  pool.query(queryString, (err, result) => {
-    if (err) {
-      console.error('Query error:', err.stack);
-    } else {
-      console.log('Query result:', result);
+    let id = request.params['id'];
+    const queryString = 'SELECT * FROM pokemon WHERE id = ' + id + ';';
+    pool.query(queryString, (err, result) => {
+        if (err) {
+            console.error('Query error:', err.stack);
+        } else {
+            console.log('Query result:', result);
 
-      // redirect to home page
-      response.render( 'pokemon/pokemon', {pokemon: result.rows[0]} );
-    }
-  });
+            // redirect to home page
+            response.render('pokemon/pokemon', { pokemon: result.rows[0] });
+        }
+    });
 }
 
 const postPokemon = (request, response) => {
-  let params = request.body;
-  
-  const queryString = 'INSERT INTO pokemon(name, height) VALUES($1, $2);';
-  const values = [params.name, params.height];
+    let params = request.body;
 
-  pool.query(queryString, values, (err, result) => {
-    if (err) {
-      console.log('query error:', err.stack);
-    } else {
-      console.log('query result:', result);
+    const queryString = 'INSERT INTO pokemon(name, height) VALUES($1, $2);';
+    const values = [params.name, params.height];
 
-      // redirect to home page
-      response.redirect('/');
-    }
-  });
+    pool.query(queryString, values, (err, result) => {
+        if (err) {
+            console.log('query error:', err.stack);
+        } else {
+            console.log('query result:', result);
+
+            // redirect to home page
+            response.redirect('/');
+        }
+    });
 };
 
 const editPokemonForm = (request, response) => {
-  let id = request.params['id'];
-  const queryString = 'SELECT * FROM pokemon WHERE id = ' + id + ';';
-  pool.query(queryString, (err, result) => {
-    if (err) {
-      console.error('Query error:', err.stack);
-    } else {
-      console.log('Query result:', result);
+    let id = request.params['id'];
+    const queryString = 'SELECT * FROM pokemon WHERE id = ' + id + ';';
+    pool.query(queryString, (err, result) => {
+        if (err) {
+            console.error('Query error:', err.stack);
+        } else {
+            console.log('Query result:', result);
 
-      // redirect to home page
-      response.render( 'pokemon/edit', {pokemon: result.rows[0]} );
-    }
-  });
+            // redirect to home page
+            response.render('pokemon/edit', { pokemon: result.rows[0] });
+        }
+    });
 }
 
 const updatePokemon = (request, response) => {
-  let id = request.params['id'];
-  let pokemon = request.body;
-  const queryString = 'UPDATE "pokemon" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
-  const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
-  console.log(queryString);
-  pool.query(queryString, values, (err, result) => {
-    if (err) {
-      console.error('Query error:', err.stack);
-    } else {
-      console.log('Query result:', result);
+    let id = request.params['id'];
+    let pokemon = request.body;
+    const queryString = 'UPDATE "pokemon" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
+    const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
+    console.log(queryString);
+    pool.query(queryString, values, (err, result) => {
+        if (err) {
+            console.error('Query error:', err.stack);
+        } else {
+            console.log('Query result:', result);
 
-      // redirect to home page
-      response.redirect('/');
-    }
-  });
+            // redirect to home page
+            response.redirect('/');
+        }
+    });
 }
 
 const deletePokemonForm = (request, response) => {
-  response.send("COMPLETE ME");
+    response.send("COMPLETE ME");
 }
 
 const deletePokemon = (request, response) => {
-  response.send("COMPLETE ME");
+    response.send("COMPLETE ME");
 }
 /**
  * ===================================
@@ -158,32 +158,86 @@ const deletePokemon = (request, response) => {
 
 
 const userNew = (request, response) => {
-  response.render('users/new');
+    let sqlText = 'SELECT id FROM users';
+
+    pool.query(sqlText, (error, queryResults) => {
+        if (error) {
+            console.log('error!', error);
+            res.status(500).send('DIDNT WORKS!!');
+        } else {
+            response.render('users/new', { users: queryResults.rows })
+        }
+    });
+
 }
 
 const userCreate = (request, response) => {
 
-  const queryString = 'INSERT INTO users (name) VALUES ($1)';
+    let userId = request.params.id;
 
-  const values = [request.body.name];
+    const queryString = 'INSERT INTO users (name) VALUES ($1)';
 
-  console.log(queryString);
+    const values = [request.body.name];
 
-  pool.query(queryString, values, (err, result) => {
+    console.log(queryString);
 
-    if (err) {
+    pool.query(queryString, values, (err, result) => {
 
-      console.error('Query error:', err.stack);
-      response.send('dang it.');
-    } else {
+        if (err) {
 
-      console.log('Query result:', result);
+            console.error('Query error:', err.stack);
+            response.send('dang it.');
+        } else {
 
-      // redirect to home page
-      response.redirect('/');
-    }
-  });
+            console.log('Query result:', result);
+            let sqlText = 'SELECT * FROM pokemon';
+
+            pool.query(sqlText, (error, queryResults) => {
+                if (error) {
+                    console.log('error!', error);
+                    response.status(500).send('DIDNT WORKS!!');
+                } else {
+
+                    response.render('users/catch', { pokemons: queryResults.rows, user: userId })
+                }
+            });
+            // redirect to home page
+            //response.redirect('/');
+        }
+    });
 }
+
+const userId = (request, response) => {
+    console.log('request body:', request.body.pokemon_id);
+    console.log(request.params.id)
+    let userId = request.params.id;
+    let pokeId = request.body.pokemon_id;
+
+    const queryString = 'INSERT INTO users_pokemons (user_id, pokemon_id) VALUES ($1, $2) RETURNING id';
+    let values = [userId, pokeId];
+
+    pool.query(queryString, values, (error, queryResults) => {
+        if (error) {
+            console.log('error!', error);
+            response.status(500).send('DIDNT WORKS!!');
+        } else {
+
+            let sqlText = `SELECT pokemon.id, pokemon.name FROM pokemon INNER JOIN users_pokemons ON (pokemon.id = users_pokemons.pokemon_id) WHERE users_pokemons.user_id = ${userId}`
+
+            pool.query(sqlText, (error, result) => {
+                if (error) {
+                    console.log('error!', error);
+                    response.status(500).send('DIDNT WORKS!!');
+                } else {
+                    response.render('users/items', { pokemons: result.rows, user: userId })
+                }
+            });
+            //response.render('users/items');
+
+        }
+    });
+};
+
 
 /**
  * ===================================
@@ -196,6 +250,7 @@ app.get('/', getRoot);
 app.get('/pokemon/:id/edit', editPokemonForm);
 app.get('/pokemon/new', getNew);
 app.get('/pokemon/:id', getPokemon);
+
 app.get('/pokemon/:id/delete', deletePokemonForm);
 
 app.post('/pokemon', postPokemon);
@@ -207,7 +262,10 @@ app.delete('/pokemon/:id', deletePokemon);
 // TODO: New routes for creating users
 
 app.get('/users/new', userNew);
-app.post('/users', userCreate);
+app.post('/users/:id/catch', userCreate);
+app.post('/user/:id', userId);
+app.get('/user/:id', userId);
+//app.put('/users/', userCatch);
 
 /**
  * ===================================
@@ -220,17 +278,15 @@ const server = app.listen(3000, () => console.log('~~~ Ahoy we go from the port 
 
 // Handles CTRL-C shutdown
 function shutDown() {
-  console.log('Recalling all ships to harbour...');
-  server.close(() => {
-    console.log('... all ships returned...');
-    pool.end(() => {
-      console.log('... all loot turned in!');
-      process.exit(0);
+    console.log('Recalling all ships to harbour...');
+    server.close(() => {
+        console.log('... all ships returned...');
+        pool.end(() => {
+            console.log('... all loot turned in!');
+            process.exit(0);
+        });
     });
-  });
 };
 
 process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
-
-
