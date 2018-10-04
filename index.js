@@ -77,6 +77,13 @@ const getNew = (request, response) => {
     response.render('pokemon/new');
 }
 
+const showPokemon = (request, response) => {
+    let id = request.query.id;
+
+            response.redirect('pokemon/'+id);
+
+}
+
 const getPokemon = (request, response) => {
     let id = request.params['id'];
     const queryString = 'SELECT * FROM pokemon WHERE id = ' + id + ';';
@@ -250,6 +257,7 @@ app.get('/', getRoot);
 app.get('/pokemon/:id/edit', editPokemonForm);
 app.get('/pokemon/new', getNew);
 app.get('/pokemon/:id', getPokemon);
+app.get('/pokemon', showPokemon)
 
 app.get('/pokemon/:id/delete', deletePokemonForm);
 
