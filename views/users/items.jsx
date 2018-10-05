@@ -2,7 +2,7 @@ var React = require("react");
 
 class Item extends React.Component {
   render() {
-    let user=this.props.user.id;
+    let user=this.props.user
     let actionURL
 
     const caughtPokemon = this.props.pokemons.map((pokemon)=>{
@@ -16,7 +16,7 @@ class Item extends React.Component {
         <head />
         <body>
             <div>
-              {user}
+              Hello! {user}
             </div>
             <div>
             Your Pokemons:
